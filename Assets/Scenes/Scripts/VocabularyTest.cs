@@ -9,11 +9,14 @@ public class VocabularyTest
     private int current_vocab = 0;
     private const float decay = 0.5f;
 
+    public bool CheckCapitals{get; set;}
+
     public VocabularyTest()
     {
         vocabulary = new List<vocable>();
         vocabulary.Add(new vocable("Test", "Test"));
         vocabulary.Add(new vocable("Lösung", "Solution"));
+        CheckCapitals = false;
     }
 
     public string GetPrompt()
@@ -28,7 +31,13 @@ public class VocabularyTest
 
     public bool TestIfCorrect(string input)
     {
-        bool correct = input == GetSolution();
+        string comp_solution = GetSolution();
+        if (!CheckCapitals)
+        {
+            input = input.ToLower();
+            comp_solution = comp_solution.ToLower();
+        }
+        bool correct = input == comp_solution;
         int new_weight = vocabulary[current_vocab].Weight;
         Debug.Log(new_weight);
         if (correct)
@@ -40,7 +49,6 @@ public class VocabularyTest
             new_weight++;
         }
         vocabulary[current_vocab].Weight = new_weight;
-        Debug.Log(new_weight);
         return correct;
 
     }
