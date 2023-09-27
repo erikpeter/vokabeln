@@ -26,18 +26,26 @@ public class VocabularyScript:MonoBehaviour
         input_field.interactable = false;
       
 
-        bool correct = test.TestIfCorrect(entered);
+        Correctness correct = test.TestIfCorrect(entered);
 
-        // case correct
+        
 
-        if (correct)
+        if (correct == Correctness.Exact)
         {
             feedback.text = "Richtig!";
+            feedback.color = Color.green;
         }
-        else // case wrong
+        else if (correct == Correctness.Wrong) // case wrong
         {
             feedback.text = "Falsch!";
+            feedback.color = Color.red;
         }
+        else
+        {
+            feedback.text = "Fast!";
+            feedback.color = Color.yellow;
+        }
+        feedback.text = feedback.text + " " + test.GetSolution();
         input_delay = std_delay;
     }
 
